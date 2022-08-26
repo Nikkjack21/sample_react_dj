@@ -1,6 +1,7 @@
 from dataclasses import fields
 from rest_framework.serializers import ModelSerializer
 from account.models import Account
+from apiview.models import Booking
 
 class AccountSerializer(ModelSerializer):
     class Meta:
@@ -10,8 +11,19 @@ class AccountSerializer(ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
+        user=self.context['request'].user
         instance = self.Meta.model(**validated_data) 
         if password is not None:
             instance.set_password(password)
         instance.save()
         return instance
+      
+
+  
+
+
+class BookingSerializer(ModelSerializer):
+    class Meta:
+        model     = Booking
+        fields = '__all__'
+    

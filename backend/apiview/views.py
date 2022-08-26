@@ -1,15 +1,17 @@
-from functools import partial
 import json
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from account.models import Account
-from apiview import serializer
-from apiview.serializer import AccountSerializer
+from apiview.models import Booking
+from apiview.serializer import AccountSerializer, BookingSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.generics import ListCreateAPIView
+from rest_framework import permissions
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 # Create your views here.
 
 
@@ -90,6 +92,107 @@ class DetailsAdd(APIView):
     
 
 
+class AddBooking(APIView):
+    def post(self, request):
+        permission_classes = [permissions.IsAuthenticated]    
+        user  = request.user.id
+        print('hello: ',user)
+        booking         = BookingSerializer(data = request.data)
+        if booking.is_valid():
+            booking.save(user=request.user)
+            return Response(booking.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+from rest_framework import viewsets
+class BookGenericAdd(APIView):
+    # authentication_classes = (TokenAuthentication, SessionAuthentication)
+    # permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+       serializer = BookingSerializer(request.user)
+       return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+class AllBookingList(APIView):
+    def get(self, request):
+        booking      = Booking.objects.filter(pending=True, approved=False, declined=False)
+        list         = BookingSerializer(booking, many=True)
+        if list:
+            print(list.data)
+            return Response(list.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)
+  
+  
+
+class BookingStatus(APIView):
+    def post(self, request, id):
+        booking = Booking.objects.get(id=id)
+
+        bookingData  = BookingSerializer(instance=booking, data=request.data, partial=True)
+        if bookingData.is_valid():
+            bookingData.save()
+        return Response(bookingData.data, status=status.HTTP_200_OK)
+
+
+
+   
+    
+
+class ApprovedView(APIView):
+    def post(self, request, id):
+        booking         = Booking.objects.get(id=id)
+        booking.approved  = True  
+        booking.pending   = False      
+        booking.save()
+
+        test = Booking.objects.filter(approved=True)
+        sample = BookingSerializer(test, many=True)
+
+        return Response(sample.data, status=status.HTTP_200_OK)
+
+
+
+
+@api_view(['POST'])
+def ChangeStatus(request, id):
+    booking         = Booking.objects.get(id=id)
+    booking.approved  = True        
+    booking.save()
+    return Response(200)
+
+
+
+
+
+
+  
+        
+class DeclinedView(APIView):
+    def post(self, request, id):
+        booking         = Booking.objects.get(id=id)
+        booking.declined  = True        
+        booking.save()
+        bookData = BookingSerializer(instance=booking, data=request.data, partial=True)
+        if bookData.is_valid():
+            bookData.save()
+        return Response(bookData.data, status=status.HTTP_200_OK)
+
+class ListApproved(APIView):
+    def get(self, request):
+        booking =  Booking.objects.filter(approved=True)
+        ser    = BookingSerializer(booking, many=True)
+        return Response(ser.data, status=status.HTTP_200_OK)
+class ListDeclined(APIView):
+    def get(self, request):
+        booking =  Booking.objects.filter(declined=True)
+        ser    = BookingSerializer(booking, many=True)
+        return Response(ser.data, status=status.HTTP_200_OK)
+
+    
     
         

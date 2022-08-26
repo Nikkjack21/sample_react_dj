@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
       : null
   );
   const navigate = useNavigate();
+  const  [err, setErr] = useState('')
 
 // Admin Login Functionality
     const AdminLogin = async (e) =>{
@@ -64,28 +65,7 @@ export const AuthProvider = ({ children }) => {
         navigate("/admin");
     }
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
 
 
@@ -138,11 +118,10 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 200) {
       setAuthToken(data);
       setUser(jwt_decode(data.access));
-      
       localStorage.setItem("authToken", JSON.stringify(data));
       navigate("/");
     } else {
-      alert("Oops something wen Wrong!");
+     setErr('Wrong credentials');
     }
   };
 
@@ -154,8 +133,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   let ContextData = {
+    err:err,
     user: user,
     admin:admin,
+    authToken:authToken,
     Register:Register,
     loginUser: loginUser,
     logOut: logOut,

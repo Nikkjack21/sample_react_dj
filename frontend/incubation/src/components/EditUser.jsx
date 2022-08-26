@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import {useNavigate, useParams } from 'react-router-dom'
 import axios from "axios";
 const EditUser = () => {
 const navigate = useNavigate()
 const {id} = useParams()
-const [val, setVal] = useState([])
+// const [val, setVal] = useState([])
 
 const [user, setUser] = useState({
   first_name:"",
@@ -24,13 +24,11 @@ const onCancel = (e) =>{
     navigate('/adminhome')
 }
 
-// useEffect((id)=>{
-//   axios.get(`http://127.0.0.1:8000/edit/${id}`).then((res)=>setVal(res.data))
-// },[])
+
 
 useEffect(()=>{
   loadUser()
-},[])
+},[]) // eslint-disable-line
 
 
 const loadUser = async () => {
@@ -44,7 +42,7 @@ const loadUser = async () => {
 const onSubmit = async e =>{
   e.preventDefault()
   await axios.post(`http://127.0.0.1:8000/edit/${id}`,user)
-  navigate('/adminhome')
+  navigate('/users')
 }
 
   return (

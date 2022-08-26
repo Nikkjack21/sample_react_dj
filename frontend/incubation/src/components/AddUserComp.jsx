@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,9 @@ const AddUserComp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [state, setState] = useState(false)
+
 
 const dataSubmit=()=>{
     Axios({
@@ -38,9 +41,6 @@ const dataSubmit=()=>{
       })
       setShowModal(false)
       }
-
-
-
 
   return (
     <>
