@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import BookCompany from "./pages/BookingUser/BookCompany";
 import AdminTable from "./components/Admin/AdminTable";
 import BookAppList from "./pages/Booking Admin/BookAppList";
+import BookingSlot from "./pages/Booking Admin/BookingSlot";
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
           <Route path="/application" element={<BookAppList/>}  />
           <Route path="/userupdate/:id" element={<EditUser />} />
           <Route path="/users" element={<AdminTable />} />
+          <Route path='/book-slots' element={<BookingSlot/>}  />
+          
         </Routes>
       </AuthProvider>
     </div>

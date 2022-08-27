@@ -16,12 +16,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { DataUser, DrawerData } from './DrawerData';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../context/AuthContext';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 
 const TestDrawer = ({children}) => {
+  const {adOut} = React.useContext(AuthContext)
     
 const drawerWidth = 220;
 
@@ -124,6 +126,7 @@ const theme = useTheme();
           <Typography variant="h6" noWrap component="div">
             Administration
           </Typography>
+      
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -152,8 +155,7 @@ const theme = useTheme();
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
-                >  
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                >  {data.icon}
                 </ListItemIcon>
                 <ListItemText primary={data.title} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -188,6 +190,35 @@ const theme = useTheme();
             </ListItem>
           ))}
         </List>
+
+        
+        <List>
+         
+            <ListItem  disablePadding sx={{ display: 'block' }}>
+              <ListItemButton
+              onClick={adOut}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                 {<LogoutIcon/>}
+                </ListItemIcon>
+                <ListItemText primary='LOGOUT'  sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+         
+        </List>
+
+
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
         <DrawerHeader/>

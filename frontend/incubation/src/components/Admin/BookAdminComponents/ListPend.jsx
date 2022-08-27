@@ -1,10 +1,17 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../../context/AuthContext";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+
 
 const ListPend = () => {
   const [show, setShow] = useState([]);
   const [see, setSee] = useState([]);
+  const [details, setDetails] = useState([]);
+
 
 
   const {setPending} = useContext(AuthContext)
@@ -30,13 +37,31 @@ const ListPend = () => {
 
     // forceUpdate();
   };
+  const [open, setOpen] = React.useState(false);
 
-  // useEffect(()=>{
-  //     const newShow = show.filter(data =>{return data.approved === false && data.declined === false})
-  //     console.log('NEWSHOW: ',newShow);
-  //     setShow(newShow)
-  // },[show])
+  const handleClose = () => setOpen(false);
 
+  const handleOpen = (id) => {
+      axios
+        .get(`http://127.0.0.1:8000/booking-details/${id}`)
+        .then((response) => setDetails(response.data));
+        setOpen(true);
+      };
+      console.log('DETAILS: ', details);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    height: 400,
+    
+  };
   return (
     <div className="container mt-5">
       <h1 className="text-left text-xl ml-3 bold">PENDING LIST</h1>
@@ -81,7 +106,8 @@ const ListPend = () => {
                 {data.email}
               </td>
               <td className=" px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap w-1/5 ">
-                <button className="text-yellow-500 hover:text-yellow-700 px-5">
+                <button onClick={()=> handleOpen(data.id)}
+                className="text-yellow-500 hover:text-yellow-700 px-5">
                   view
                 </button>
               </td>
@@ -106,6 +132,41 @@ const ListPend = () => {
           ))}
         </tbody>
       </table>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <h1 className="text-center text-4xl "> Company Details</h1>
+            <hr className="mb-3"/>
+            <h2 >Company: <span> {details.company_name}</span>   </h2>
+            
+            <hr/>
+            <h2>User: {details.fullname}</h2>
+            <hr/>
+
+            <h2>Phone: {details.phone}</h2>
+            <hr/>
+
+            <h2>Email: {details.email}</h2>            <hr/>
+
+            <h2>Address: {details.address}</h2>
+            <hr/>
+            <h2>Booked: </h2>
+            <hr/>
+          </Box>
+        </Fade>
+      </Modal>
+
     </div>
   );
 };

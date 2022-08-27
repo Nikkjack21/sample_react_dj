@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apiview.models import Booking
+from apiview.models import Booking, BookingSlot
 
 # Register your models here.
 
@@ -11,4 +11,11 @@ class BookingAdmin(admin.ModelAdmin):
     fieldsets = ()
 
 
+class SlotAdmin(admin.ModelAdmin):
+    list_display= ( 'booking', 'room', 'is_booked' )
+
+
+
+
+admin.site.register(BookingSlot, SlotAdmin)
 admin.site.register(Booking, BookingAdmin)

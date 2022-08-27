@@ -31,12 +31,16 @@ class Booking(models.Model):
 
     def __str__(self):
         return self.company_name
-    pass
+    
 
 
 
 
 
 class BookingSlot(models.Model):
+    booking     = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True)
+    room        = models.IntegerField()
+    is_booked   = models.BooleanField(default=False) 
 
-    pass
+    def _str__(self):
+        return self.booking

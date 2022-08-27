@@ -8,9 +8,10 @@ const HomeMain = () => {
   const navigate = useNavigate();
   const [save, setSave] = useState([]);
 
+  console.log('user:  ', user);
+  
   useEffect(() => {
     if (user && user !== null) {
-      console.log("Heyyyyyyy", user);
       setSave(user);
       navigate("/");
     }

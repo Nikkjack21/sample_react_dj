@@ -1,20 +1,49 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../../context/AuthContext";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+
 
 const BookingList = () => {
   const [show, setShow] = useState([]);
+  const [details, setDetails] = useState([]);
 
-  const {pending}  = useContext(AuthContext)
+  const { pending } = useContext(AuthContext);
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/list")
       .then((response) => setShow(response.data));
-      
   }, [pending]);
 
+  const [open, setOpen] = React.useState(false);
 
+  const handleClose = () => setOpen(false);
+
+  const handleOpen = (id) => {
+      axios
+        .get(`http://127.0.0.1:8000/booking-details/${id}`)
+        .then((response) => setDetails(response.data));
+        setOpen(true);
+      };
+      console.log('DETAILS: ', details);
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+    height: 400,
+    
+  };
 
   return (
     <div className="flex flex-col">
@@ -71,26 +100,20 @@ const BookingList = () => {
                         {data.email}
                       </td>
                       <td className="px-6 text-left py-4 text-sm font-medium whitespace-nowrap">
-                        <a
+                        <button
+                          type="submit"
+                          onClick={() => handleOpen(data.id)}
                           className="text-yellow-500 hover:text-yellow-700"
-                          href="#/"
                         >
-                          View
-                        </a>
+                          view
+                        </button>
                       </td>
                       <td className="text-left px-6 py-4 text-sm font-medium  whitespace-nowrap">
-{
-  data.pending ?
-                (        <a
-                          className="text-red-500 hover:text-red-700"
-                          href="#/"
-                        >
-                          Pending
-                        </a>
-) : null
-
-
-}
+                        {data.pending ? (
+                          <p className="text-red-500 hover:text-red-700">
+                            Pending
+                          </p>
+                        ) : null}
                       </td>
                     </tr>
                   ) : null
@@ -100,6 +123,39 @@ const BookingList = () => {
           </div>
         </div>
       </div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <h1 className="text-center text-4xl "> Company Details</h1>
+            <hr className="mb-3"/>
+            <h2 >Company: <span> {details.company_name}</span>   </h2>
+            
+            <hr/>
+            <h2>User: {details.fullname}</h2>
+            <hr/>
+
+            <h2>Phone: {details.phone}</h2>
+            <hr/>
+
+            <h2>Email: {details.email}</h2>            <hr/>
+
+            <h2>Address: {details.address}</h2>
+            <hr/>
+            <h2>Booked: </h2>
+            <hr/>
+          </Box>
+        </Fade>
+      </Modal>
     </div>
   );
 };

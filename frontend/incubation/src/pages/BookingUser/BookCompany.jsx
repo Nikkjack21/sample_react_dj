@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import Header from '../../components/Header'
 import AuthContext from "../../context/AuthContext";
 
+
 const BookCompany = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [save, setSave] = useState([]);
+
+
 
     
   const [fullname, setFullname] = useState("");
@@ -22,32 +25,35 @@ const BookCompany = () => {
   
     useEffect(() => {
       if (user && user !== null) {
-        console.log("Heyyyyyyy", user);
         setSave(user);
         navigate("/book");
       }
     }, [user, navigate, save]);
+    console.log(user,"000");
 
     const onSubmit=(e)=>{
         e.preventDefault()
-        console.log('Submit')
-        axios.post('http://127.0.0.1:8000/booking',{
+        console.log('Submit: ', user.user_id)
+        axios.post(`http://127.0.0.1:8000/booking/${user.id}/`,  {
             fullname:fullname,
             phone:phone,
             company_name:company_name,
             city:city,
             state:state,
             email:email,
-            address:address
+            address:address,
+            id: user.id
         },{
             headers:{
-                "Content-type": "application/json"
+                "Content-type": "application/json",
+                // 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+
             }
         }).then((response)=>{
             console.log('Response: ', response)
-            if(response.status === 201){
+            if(response.status === 200){
                 navigate('/book')
-                alert('Booking Sugbmitted')
+                alert('Booking Submitted')
                 reset()
                
             }else{
@@ -87,7 +93,7 @@ const BookCompany = () => {
                         <label className="block text-grey-darker text-sm font-bold mb-2" >Full Name:</label>
                         <input
                         value={fullname} onChange={(e)=>setFullname(e.target.value)}
-                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="name"type="text" placeholder="Fullname"/>
+                         className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="fullname"type="text" placeholder="Fullname"/>
                     </div>
                     <div className="w-1/2 ml-1">
                         <label className="block text-grey-darker text-sm font-bold mb-2" >Phone:</label>
@@ -101,7 +107,7 @@ const BookCompany = () => {
                         <label className="block text-grey-darker text-sm font-bold mb-2" >Company Name:</label>
                         <input
                          value={company_name} onChange={(e)=>setComp(e.target.value)}
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="name" id="" type="text" placeholder="Company"/>
+                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" name="company_name" id="" type="text" placeholder="Company"/>
                     </div>
                     <div className="w-1/2 ml-1">
                         <label className="block text-grey-darker text-sm font-bold mb-2" >City:</label>

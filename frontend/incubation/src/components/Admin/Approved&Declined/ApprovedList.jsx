@@ -20,7 +20,7 @@ const ApprovedList = () => {
               Sl.no
             </th>
             <th className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase w-1/5 ">
-              User
+              Name
             </th>
             <th className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase w-1/5 ">
               email
