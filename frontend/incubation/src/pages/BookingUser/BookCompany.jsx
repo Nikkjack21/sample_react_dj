@@ -46,7 +46,6 @@ const BookCompany = () => {
         },{
             headers:{
                 "Content-type": "application/json",
-                // 'Authorization': `Bearer ${localStorage.getItem('authToken')}`
 
             }
         }).then((response)=>{

@@ -1,7 +1,7 @@
 from dataclasses import fields
 from rest_framework.serializers import ModelSerializer
 from account.models import Account
-from apiview.models import Booking
+from apiview.models import Booking, BookingSlot
 
 class AccountSerializer(ModelSerializer):
     class Meta:
@@ -27,3 +27,8 @@ class BookingSerializer(ModelSerializer):
         model     = Booking
         fields = '__all__'
     
+
+class SlotSerializer(ModelSerializer):
+    class Meta:
+        model = BookingSlot
+        fields  = '__all__'

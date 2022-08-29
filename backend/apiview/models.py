@@ -34,13 +34,10 @@ class Booking(models.Model):
     
 
 
-
-
-
 class BookingSlot(models.Model):
-    booking     = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True)
+    booking     = models.ForeignKey(Booking, on_delete=models.CASCADE, null=True, blank=True)
     room        = models.IntegerField()
-    is_booked   = models.BooleanField(default=False) 
+    is_booked   = models.BooleanField(default=False, null=True, blank=True) 
 
     def _str__(self):
         return self.booking

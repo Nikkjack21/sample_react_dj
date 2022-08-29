@@ -1,10 +1,11 @@
+from functools import partial
 import json
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
 from account.models import Account
-from apiview.models import Booking
-from apiview.serializer import AccountSerializer, BookingSerializer
+from apiview.models import Booking, BookingSlot
+from apiview.serializer import AccountSerializer, BookingSerializer, SlotSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -214,3 +215,33 @@ class BookingDetails(APIView):
         print('boookin', booking)
         return Response(list.data)
 
+
+
+class ViewSlots(APIView):
+    def get(self, request):
+        slots               = BookingSlot.objects.all()
+        slot_serializer     = SlotSerializer(slots, many=True)
+        return Response(slot_serializer.data)
+
+
+class AddSlot(APIView):
+    def post(self, request):
+        slot            = SlotSerializer(data = request.data, partial=True)
+        if slot.is_valid():
+            slot.save()
+        return Response(slot.data)
+
+
+class AssignSlot(APIView):
+    def post(self,request, id, pk):
+        print('heyyyy', id)
+        slot = BookingSlot.objects.get(id=id)
+        book  = Booking.objects.get(id=pk)
+        slot.booking = book
+        slot.is_booked = True
+        slot.save()
+        return Response(200)
+        
+
+
+        

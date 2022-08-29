@@ -107,13 +107,10 @@ export const AuthProvider = ({ children }) => {
     console.log("Response: ", response);
     if (response.status === 200) {
       setAuthToken(data);
+      setUser(jwt_decode(data.access))
       localStorage.setItem("authToken", JSON.stringify(data));
-      if(admin.is_admin===true){
-
-        navigate("/");
-      }else{
-        alert('You are not admin')
-      }
+      navigate("/");
+ 
     } else {
       setErr("Wrong credentials");
     }

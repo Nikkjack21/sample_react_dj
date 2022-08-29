@@ -12,7 +12,7 @@ class BookingAdmin(admin.ModelAdmin):
 
 
 class SlotAdmin(admin.ModelAdmin):
-    list_display= ( 'booking', 'room', 'is_booked' )
+    list_display= (  'room', 'is_booked' )
 
 
 
