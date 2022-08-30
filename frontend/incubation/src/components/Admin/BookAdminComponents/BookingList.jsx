@@ -151,7 +151,7 @@ const BookingList = () => {
 
             <h2>Address: {details.address}</h2>
             <hr/>
-            <h2>Booked: </h2>
+           
             <hr/>
           </Box>
         </Fade>

@@ -212,7 +212,7 @@ class BookingDetails(APIView):
     def get(self, request, id):
         booking         = Booking.objects.get(id=id)
         list            = BookingSerializer(booking)
-        print('boookin', booking)
+        
         return Response(list.data)
 
 
@@ -237,10 +237,19 @@ class AssignSlot(APIView):
         print('heyyyy', id)
         slot = BookingSlot.objects.get(id=id)
         book  = Booking.objects.get(id=pk)
+        book.allotted = True
+        book.save()
         slot.booking = book
         slot.is_booked = True
         slot.save()
         return Response(200)
+        
+class getBookingDetails(APIView):
+    def get(self, request, id):
+        print('oooooooooooo',id)
+        slot            = BookingSlot.objects.get(id=id)
+        serializer =    SlotSerializer(slot)
+        return Response(serializer.data)
         
 
 

@@ -2,6 +2,7 @@ from dataclasses import fields
 from rest_framework.serializers import ModelSerializer
 from account.models import Account
 from apiview.models import Booking, BookingSlot
+from rest_framework import serializers
 
 class AccountSerializer(ModelSerializer):
     class Meta:

@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from apiview.views import AddBooking, AddSlot, AllBookingList, ApprovedView, AssignSlot, BookingDetails, BookingStatus, DeclinedView, DeleteUser, DetailsAdd, EditUser, ListApproved, ListDeclined, MyTokenObtainPairView, RegisterUser, TestUser, ViewSlots 
+from apiview.views import AddBooking, AddSlot, AllBookingList, ApprovedView, AssignSlot, BookingDetails, BookingStatus, DeclinedView, DeleteUser, DetailsAdd, EditUser, ListApproved, ListDeclined, MyTokenObtainPairView, RegisterUser, TestUser, ViewSlots, getBookingDetails 
 from .import views
 
 urlpatterns = [
@@ -34,6 +34,7 @@ urlpatterns = [
     path('view-slots', ViewSlots.as_view()),
     path('add-slot', AddSlot.as_view()),
     path('assign-slot/<int:id>/<int:pk>', AssignSlot.as_view()),
+    path('booking-details/<int:id>',getBookingDetails.as_view()),
 
     
 

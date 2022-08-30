@@ -23,6 +23,7 @@ class Booking(models.Model):
     approved            = models.BooleanField(default=False)
     declined            = models.BooleanField(default=False)
     pending             = models.BooleanField(default=True)
+    allotted            = models.BooleanField(default=False)
 
     class Meta:
         verbose_name        = 'Booking'
@@ -31,13 +32,19 @@ class Booking(models.Model):
 
     def __str__(self):
         return self.company_name
+
     
 
 
 class BookingSlot(models.Model):
-    booking     = models.ForeignKey(Booking, on_delete=models.CASCADE, null=True, blank=True)
+    booking     = models.ForeignKey(Booking,on_delete=models.SET_NULL, null=True, blank=True)
     room        = models.IntegerField()
     is_booked   = models.BooleanField(default=False, null=True, blank=True) 
 
     def _str__(self):
         return self.booking
+
+
+
+
+
