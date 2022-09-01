@@ -4,17 +4,18 @@ import AuthContext from "../context/AuthContext";
 
 export const ProtectedRoute = ({children}) =>{
         const {user} = useContext(AuthContext)
+        console.log('USERRRR: ', user);
         if(user){
             return children
         }
-        return <Navigate to='/login' replace/>
+        return <Navigate to='/login'  />
 }
 
 
 export const AdminRoute = ({children})=>{
-    const {user} = useContext(AuthContext)
-    if (user){
+    const {admin} = useContext(AuthContext)
+    if (admin){
         return children
     }
-    return <Navigate to='/admin'/>
+    return <Navigate to='/admin' />
 }

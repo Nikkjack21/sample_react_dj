@@ -13,6 +13,7 @@ import BookCompany from "./pages/BookingUser/BookCompany";
 import AdminTable from "./components/Admin/AdminTable";
 import BookAppList from "./pages/Booking Admin/BookAppList";
 import BookingSlot from "./pages/Booking Admin/BookingSlot";
+import BookingRecord from "./pages/Booking Admin/BookingRecord";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
           <Route path="/book" element={<BookCompany />} />
 
           {/* Admin Page */}
-          <Route path="/admin" element={<AdminLogin />} />
+
           <Route
             path="/adminhome"
             element={
@@ -43,11 +44,13 @@ function App() {
               </AdminRoute>
             }
           />
-          <Route path="/application" element={<BookAppList/>}  />
+          <Route path="admin" element={<AdminLogin />} />
+
+          <Route path="/application" element={<BookAppList />} />
           <Route path="/userupdate/:id" element={<EditUser />} />
           <Route path="/users" element={<AdminTable />} />
-          <Route path='/book-slots' element={<BookingSlot/>}  />
-          
+          <Route path="/book-slots" element={<BookingSlot />} />
+          <Route path="/records" element={<BookingRecord/>} />
         </Routes>
       </AuthProvider>
     </div>

@@ -131,7 +131,7 @@ const SlotBooking = () => {
           />{" "}
           <h1> Reserved</h1>
         </div>
-        <div className="">
+        <div >
           <Fab size="small" color="primary" aria-label="add">
             <AddIcon onClick={handleClickOpen} />
           </Fab>

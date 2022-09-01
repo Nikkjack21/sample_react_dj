@@ -138,6 +138,14 @@ class BookGenericAdd(APIView):
 
 
 
+class TotalList(APIView):
+    def get(self, request):
+        book   = Booking.objects.all()
+        list         = BookingSerializer(book, many=True)
+        if list:
+            return Response(list.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)       
+
 
 
 class AllBookingList(APIView):
@@ -187,7 +195,8 @@ def ChangeStatus(request, id):
 class DeclinedView(APIView):
     def post(self, request, id):
         booking             = Booking.objects.get(id=id)
-        booking.declined    = True        
+        booking.declined    = True   
+        booking.pending     = False     
         booking.save()
         bookData = BookingSerializer(instance=booking, data=request.data, partial=True)
         if bookData.is_valid():

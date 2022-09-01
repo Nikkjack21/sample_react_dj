@@ -38,7 +38,7 @@ class Booking(models.Model):
 
 class BookingSlot(models.Model):
     booking     = models.ForeignKey(Booking,on_delete=models.SET_NULL, null=True, blank=True)
-    room        = models.IntegerField()
+    room        = models.IntegerField(unique=True)
     is_booked   = models.BooleanField(default=False, null=True, blank=True) 
 
     def _str__(self):

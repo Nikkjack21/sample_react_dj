@@ -24,7 +24,7 @@ export const DrawerData=[
     },
     {
         title:"Record tracks",
-        path:   "#/", 
+        path:   "/records", 
         icon:<BarChartIcon/>,
     },
 
